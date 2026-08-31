@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة المعدل — مسار</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">م</span>
+      <span class="name">مسار</span>
+    </a>
+    <nav class="site-nav">
+      <a href="gpa.html" class="active">حاسبة المعدل</a>
+      <a href="absence.html">حاسبة الغياب</a>
+      <a href="calendar.html">التقويم</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">سلم الدرجات من 5.0</p>
+    <h1 class="page-title">حاسبة المعدل</h1>
+    <p class="page-sub">أدخل سجلك السابق، ثم مواد الفصل الحالي، وبنحسب لك المعدل الفصلي والمعدل التراكمي الجديد.</p>
+
+    <div class="panel">
+      <h2>سجلك السابق</h2>
+      <div class="field-row">
+        <div class="field">
+          <label>الساعات المنجزة سابقًا</label>
+          <input type="number" id="prevHours" min="0" step="1" placeholder="مثال: 60">
+        </div>
+        <div class="field">
+          <label>معدلك التراكمي السابق</label>
+          <input type="number" id="prevGpa" min="0" max="5" step="0.01" placeholder="مثال: 4.20">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>مواد الفصل الحالي</h2>
+      <div class="courses" id="courseList"></div>
+      <button class="btn btn-ghost" id="addCourse" type="button">+ إضافة مادة</button>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="calcBtn" type="button">احسب المعدل</button>
+
+    <div class="results">
+      <div class="result-box">
+        <div class="label">المعدل الفصلي</div>
+        <div class="value" id="semGpa">—</div>
+      </div>
+      <div class="result-box highlight">
+        <div class="label">المعدل التراكمي الجديد</div>
+        <div class="value" id="cumGpa">—</div>
+      </div>
+      <div class="result-box">
+        <div class="label">إجمالي الساعات</div>
+        <div class="value" id="totalHours">—</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

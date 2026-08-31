@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقويم — مسار</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">م</span>
+      <span class="name">مسار</span>
+    </a>
+    <nav class="site-nav">
+      <a href="gpa.html">حاسبة المعدل</a>
+      <a href="absence.html">حاسبة الغياب</a>
+      <a href="calendar.html" class="active">التقويم</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">فعاليات ومواعيد الفصل</p>
+    <h1 class="page-title">التقويم الدراسي</h1>
+    <p class="page-sub">اضغط على أي يوم لعرض فعالياته أو إضافة موعد جديد. يتم حفظ مواعيدك في متصفحك تلقائيًا.</p>
+
+    <div class="panel">
+      <div class="cal-head">
+        <div class="cal-nav">
+          <button id="prevMonth" type="button">‹</button>
+          <button id="nextMonth" type="button">›</button>
+        </div>
+        <div class="month-label" id="monthLabel">—</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="event-panel">
+        <div id="selectedDateLabel" class="eyebrow">اختر يومًا من التقويم</div>
+        <div id="eventList"></div>
+        <div class="event-form" id="eventForm" style="display:none;">
+          <input type="text" id="eventTitle" placeholder="عنوان الموعد">
+          <input type="text" id="eventNote" placeholder="ملاحظة (اختياري)">
+          <button class="btn btn-primary" id="addEvent" type="button" style="grid-column:1/-1;">إضافة الموعد</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
