@@ -102,6 +102,33 @@ if (calGrid) {
   const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
   const STORAGE_KEY = "masar_calendar_events";
 
+  /* التقويم الجامعي الرسمي — جامعة الملك سعود، العام الجامعي 2026-2027م
+     المصدر: dar.ksu.edu.sa/ar/current (آخر تحديث: أغسطس 2026) */
+  const KSU_EVENTS = {
+    "2026-08-23": [{ title: "بداية الدراسة — الفصل الأول" }],
+    "2026-09-23": [{ title: "بداية إجازة اليوم الوطني" }],
+    "2026-09-27": [{ title: "بداية الدراسة بعد إجازة اليوم الوطني" }],
+    "2026-11-22": [{ title: "بداية إجازة الخريف" }],
+    "2026-11-29": [{ title: "بداية الدراسة بعد إجازة الخريف" }],
+    "2026-12-06": [{ title: "أسبوع التعزيز الأكاديمي" }],
+    "2026-12-13": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
+    "2026-12-26": [{ title: "نهاية الاختبارات النهائية — الفصل الأول" }],
+    "2026-12-27": [{ title: "بداية إجازة منتصف العام" }],
+    "2027-01-10": [{ title: "بداية الدراسة — الفصل الثاني" }],
+    "2027-02-14": [{ title: "بداية إجازة عيد الفطر المبارك" }],
+    "2027-03-14": [{ title: "بداية الدراسة بعد إجازة عيد الفطر" }],
+    "2027-05-09": [{ title: "بداية إجازة عيد الأضحى المبارك" }],
+    "2027-05-23": [{ title: "بداية الدراسة بعد إجازة عيد الأضحى" }],
+    "2027-05-30": [{ title: "أسبوع التعزيز الأكاديمي" }],
+    "2027-06-06": [{ title: "بداية الاختبارات النهائية — الفصل الثاني" }],
+    "2027-06-19": [{ title: "نهاية الاختبارات النهائية — الفصل الثاني" }],
+    "2027-06-20": [{ title: "بداية إجازة نهاية العام الدراسي" }],
+    "2027-06-22": [{ title: "بداية الدراسة — الفصل الصيفي" }],
+    "2027-08-10": [{ title: "بداية الاختبارات النهائية — الفصل الصيفي" }],
+    "2027-08-12": [{ title: "نهاية الاختبارات النهائية — الفصل الصيفي" }],
+    "2027-08-29": [{ title: "بداية الدراسة للعام الجامعي 2027-2028" }]
+  };
+
   let today = new Date();
   let viewYear = today.getFullYear();
   let viewMonth = today.getMonth();
@@ -117,6 +144,11 @@ if (calGrid) {
   function dateKey(y, m, d) {
     return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
   }
+  function getDayEvents(key) {
+    const official = (KSU_EVENTS[key] || []).map(e => ({ ...e, official: true }));
+    const personal = (loadEvents()[key] || []).map(e => ({ ...e, official: false }));
+    return official.concat(personal);
+  }
 
   function renderCalendar() {
     document.getElementById("monthLabel").textContent = `${MONTHS[viewMonth]} ${viewYear}`;
@@ -131,7 +163,6 @@ if (calGrid) {
 
     const firstDay = new Date(viewYear, viewMonth, 1).getDay();
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const events = loadEvents();
 
     for (let i = 0; i < firstDay; i++) {
       const empty = document.createElement("div");
@@ -148,7 +179,7 @@ if (calGrid) {
       if (isToday) cell.classList.add("today");
 
       cell.innerHTML = `<span>${d}</span>`;
-      if (events[key] && events[key].length > 0) {
+      if (getDayEvents(key).length > 0) {
         const dot = document.createElement("span");
         dot.className = "dot";
         cell.appendChild(dot);
@@ -173,8 +204,7 @@ if (calGrid) {
     listEl.innerHTML = "";
     if (!selectedDate) return;
 
-    const events = loadEvents();
-    const items = events[selectedDate] || [];
+    const items = getDayEvents(selectedDate);
 
     if (items.length === 0) {
       listEl.innerHTML = `<div class="event-empty">لا توجد مواعيد لهذا اليوم بعد.</div>`;
@@ -187,19 +217,22 @@ if (calGrid) {
       item.innerHTML = `
         <span class="event-dot"></span>
         <div style="flex:1">
-          <div class="etitle">${ev.title}</div>
+          <div class="etitle">${ev.title}${ev.official ? ' <span style="color:var(--muted);font-weight:400;font-size:12px;">— التقويم الجامعي</span>' : ""}</div>
           ${ev.note ? `<div class="enote">${ev.note}</div>` : ""}
         </div>
-        <button type="button" class="remove-btn" title="حذف">×</button>
+        ${ev.official ? "" : '<button type="button" class="remove-btn" title="حذف">×</button>'}
       `;
-      item.querySelector(".remove-btn").addEventListener("click", () => {
-        const events = loadEvents();
-        events[selectedDate].splice(idx, 1);
-        if (events[selectedDate].length === 0) delete events[selectedDate];
-        saveEvents(events);
-        renderEventList();
-        renderCalendar();
-      });
+      if (!ev.official) {
+        item.querySelector(".remove-btn").addEventListener("click", () => {
+          const events = loadEvents();
+          const personalIdx = idx - (KSU_EVENTS[selectedDate] || []).length;
+          events[selectedDate].splice(personalIdx, 1);
+          if (events[selectedDate].length === 0) delete events[selectedDate];
+          saveEvents(events);
+          renderEventList();
+          renderCalendar();
+        });
+      }
       listEl.appendChild(item);
     });
   }
