@@ -328,10 +328,18 @@ main{ padding: 56px 0 90px; }
 }
 .cal-day.empty{ background: transparent; border-color: transparent; cursor: default; }
 .cal-day.today{ border-color: var(--ink); font-weight: 600; }
+.cal-day.official{
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+  font-weight: 700;
+}
+.cal-day.official.today{ box-shadow: 0 0 0 2px var(--ink); }
 .cal-day .dot{
   width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
   position: absolute; bottom: 7px;
 }
+.cal-day.official .dot{ background: var(--white); }
 .cal-day:hover:not(.empty){ border-color: var(--accent); }
 
 .event-panel{

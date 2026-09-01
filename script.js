@@ -178,8 +178,13 @@ if (calGrid) {
       const isToday = (viewYear === today.getFullYear() && viewMonth === today.getMonth() && d === today.getDate());
       if (isToday) cell.classList.add("today");
 
+      const dayEvents = getDayEvents(key);
+      const hasOfficial = !!KSU_EVENTS[key];
+      const hasPersonal = dayEvents.some(e => !e.official);
+      if (hasOfficial) cell.classList.add("official");
+
       cell.innerHTML = `<span>${d}</span>`;
-      if (getDayEvents(key).length > 0) {
+      if (hasPersonal) {
         const dot = document.createElement("span");
         dot.className = "dot";
         cell.appendChild(dot);
