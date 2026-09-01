@@ -21,6 +21,7 @@
       <span class="name">مبادرة مسار</span>
     </a>
     <nav class="site-nav">
+      <a href="index.html">الرئيسية</a>
       <a href="gpa.html" class="active">حاسبة المعدل</a>
       <a href="absence.html">حاسبة الغياب</a>
       <a href="calendar.html">التقويم</a>
@@ -38,9 +39,21 @@
 
 <main>
   <div class="wrap">
-    <p class="eyebrow">سلم الدرجات من 5.0</p>
+    <p class="eyebrow">اختر جامعتك وسلّم درجاتها يتحدد تلقائيًا</p>
     <h1 class="page-title">حاسبة المعدل</h1>
     <p class="page-sub">أدخل سجلك السابق، ثم مواد الفصل الحالي، وبنحسب لك المعدل الفصلي والمعدل التراكمي الجديد.</p>
+
+    <div class="panel">
+      <div class="field">
+        <label>الجامعة</label>
+        <select id="uniSelect">
+          <option value="ksu">جامعة الملك سعود (KSU)</option>
+          <option value="kau">جامعة الملك عبدالعزيز (KAU)</option>
+          <option value="kfupm">جامعة الملك فهد للبترول والمعادن (KFUPM)</option>
+          <option value="pnu">جامعة الأميرة نورة (PNU)</option>
+        </select>
+      </div>
+    </div>
 
     <div class="panel">
       <h2>سجلك السابق</h2>
@@ -50,7 +63,7 @@
           <input type="number" id="prevHours" min="0" step="1" placeholder="مثال: 60">
         </div>
         <div class="field">
-          <label>معدلك التراكمي السابق</label>
+          <label id="prevGpaLabel">معدلك التراكمي السابق (من 5.0)</label>
           <input type="number" id="prevGpa" min="0" max="5" step="0.01" placeholder="مثال: 4.20">
         </div>
       </div>
@@ -82,13 +95,13 @@
     <div class="panel" style="margin-top: 36px;">
       <h2>كيف تُحسب المعدل الفصلي والتراكمي؟</h2>
       <p style="color: var(--muted); font-size: 15px;">
-        المعدل الفصلي يُحسب بضرب عدد ساعات كل مادة بالنقاط المقابلة لدرجتها على سلم 5.0، ثم جمع الناتج وتقسيمه على إجمالي ساعات الفصل. أما المعدل التراكمي فيأخذ بعين الاعتبار كل الساعات والدرجات من بداية دراستك الجامعية، بما فيها سجلك السابق. الحاسبة هذي تعتمد سلم الدرجات المعتمد بأغلب الجامعات السعودية (KSU): A+ = 5.0، A = 4.75، B+ = 4.5، B = 4.0، C+ = 3.5، C = 3.0، D+ = 2.5، D = 2.0، F = 1.0.
+        المعدل الفصلي يُحسب بضرب عدد ساعات كل مادة بالنقاط المقابلة لدرجتها، ثم جمع الناتج وتقسيمه على إجمالي ساعات الفصل. أما المعدل التراكمي فيأخذ بعين الاعتبار كل الساعات والدرجات من بداية دراستك الجامعية، بما فيها سجلك السابق. سلّم الدرجات يتغيّر تلقائيًا حسب الجامعة المختارة أعلاه — جامعة الملك سعود والملك عبدالعزيز والأميرة نورة تعتمد سلّم 5.0 الموحّد، بينما جامعة الملك فهد للبترول والمعادن تعتمد سلّم 4.0.
       </p>
     </div>
   </div>
 </main>
 
-<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+<footer class="site"><div class="wrap footer-inner"><span>مسار — أداة مستقلة لتسهيل الحياة الدراسية</span><span>صُممت للطالب، ببساطة.</span></div></footer>
 
 <script src="script.js"></script>
 </body>

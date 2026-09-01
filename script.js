@@ -1,34 +1,105 @@
-/* ============ حاسبة المعدل ============ */
-const GRADE_POINTS = {
-  "A+": 5.0, "A": 4.75, "B+": 4.5, "B": 4.0,
-  "C+": 3.5, "C": 3.0, "D+": 2.5, "D": 2.0, "F": 1.0
+/* ============ بيانات الجامعات ============ */
+const UNIVERSITIES = {
+  ksu:   { name: "جامعة الملك سعود",              scaleMax: 5.0, grades: { "A+": 5.0, "A": 4.75, "B+": 4.5, "B": 4.0, "C+": 3.5, "C": 3.0, "D+": 2.5, "D": 2.0, "F": 1.0 } },
+  kau:   { name: "جامعة الملك عبدالعزيز",          scaleMax: 5.0, grades: { "A+": 5.0, "A": 4.75, "B+": 4.5, "B": 4.0, "C+": 3.5, "C": 3.0, "D+": 2.5, "D": 2.0, "F": 1.0 } },
+  kfupm: { name: "جامعة الملك فهد للبترول والمعادن", scaleMax: 4.0, grades: { "A+": 4.0, "A": 3.75, "B+": 3.5, "B": 3.0, "C+": 2.5, "C": 2.0, "D+": 1.5, "D": 1.0, "F": 0.0 } },
+  pnu:   { name: "جامعة الأميرة نورة",             scaleMax: 5.0, grades: { "A+": 5.0, "A": 4.75, "B+": 4.5, "B": 4.0, "C+": 3.5, "C": 3.0, "D+": 2.5, "D": 2.0, "F": 1.0 } }
 };
+const UNI_STORAGE_KEY = "masar_university";
+
+function getSelectedUniversity() {
+  return localStorage.getItem(UNI_STORAGE_KEY) || "ksu";
+}
+function setSelectedUniversity(id) {
+  localStorage.setItem(UNI_STORAGE_KEY, id);
+}
+
+/* ============ اختيار الجامعة (الصفحة الرئيسية) ============ */
+const homeUniSelectEl = document.getElementById("homeUniSelect");
+if (homeUniSelectEl) {
+  homeUniSelectEl.value = getSelectedUniversity();
+  homeUniSelectEl.addEventListener("change", () => {
+    setSelectedUniversity(homeUniSelectEl.value);
+  });
+}
+
+/* ============ حاسبة المعدل ============ */
+let GRADE_POINTS = UNIVERSITIES[getSelectedUniversity()].grades;
 
 const courseListEl = document.getElementById("courseList");
+const uniSelectEl = document.getElementById("uniSelect");
 
 function addCourseRow(name = "", hours = "", grade = "A+") {
   const row = document.createElement("div");
   row.className = "course-row";
-  row.innerHTML = `
-    <input type="text" class="c-name" placeholder="اسم المادة" value="${name}">
-    <input type="number" class="c-hours" placeholder="ساعات" min="0" step="1" value="${hours}">
-    <select class="c-grade">
-      ${Object.keys(GRADE_POINTS).map(g => `<option value="${g}" ${g === grade ? "selected" : ""}>${g}</option>`).join("")}
-    </select>
-    <button type="button" class="remove-btn" title="حذف">×</button>
-  `;
-  row.querySelector(".remove-btn").addEventListener("click", () => row.remove());
+
+  const nameInput = document.createElement("input");
+  nameInput.type = "text";
+  nameInput.className = "c-name";
+  nameInput.placeholder = "اسم المادة";
+  nameInput.value = name;
+
+  const hoursInput = document.createElement("input");
+  hoursInput.type = "number";
+  hoursInput.className = "c-hours";
+  hoursInput.placeholder = "ساعات";
+  hoursInput.min = "0";
+  hoursInput.step = "1";
+  hoursInput.value = hours;
+
+  const select = document.createElement("select");
+  select.className = "c-grade";
+  Object.keys(GRADE_POINTS).forEach(g => {
+    const option = document.createElement("option");
+    option.value = g;
+    option.textContent = g;
+    option.selected = g === grade;
+    select.appendChild(option);
+  });
+
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "remove-btn";
+  remove.title = "حذف";
+  remove.setAttribute("aria-label", "حذف المادة");
+  remove.textContent = "×";
+  remove.addEventListener("click", () => row.remove());
+
+  row.append(nameInput, hoursInput, select, remove);
   courseListEl.appendChild(row);
 }
 
 if (courseListEl) {
+  if (uniSelectEl) {
+    uniSelectEl.value = getSelectedUniversity();
+    applyUniversityToGpaPage(uniSelectEl.value);
+    uniSelectEl.addEventListener("change", () => {
+      setSelectedUniversity(uniSelectEl.value);
+      applyUniversityToGpaPage(uniSelectEl.value);
+    });
+  }
+
   addCourseRow();
   addCourseRow();
   document.getElementById("addCourse").addEventListener("click", () => addCourseRow());
 
+  const prevGpaInputEl = document.getElementById("prevGpa");
+  if (prevGpaInputEl) {
+    prevGpaInputEl.addEventListener("change", () => {
+      const uni = UNIVERSITIES[getSelectedUniversity()];
+      const val = parseFloat(prevGpaInputEl.value);
+      if (!isNaN(val) && val > uni.scaleMax) prevGpaInputEl.value = uni.scaleMax;
+    });
+  }
+
   document.getElementById("calcBtn").addEventListener("click", () => {
     const prevHours = parseFloat(document.getElementById("prevHours").value) || 0;
-    const prevGpa = parseFloat(document.getElementById("prevGpa").value) || 0;
+    const currentUni = UNIVERSITIES[getSelectedUniversity()];
+    let prevGpa = parseFloat(document.getElementById("prevGpa").value) || 0;
+    if (prevGpa > currentUni.scaleMax) {
+      prevGpa = currentUni.scaleMax;
+      document.getElementById("prevGpa").value = currentUni.scaleMax;
+    }
 
     let semHours = 0;
     let semPoints = 0;
@@ -53,13 +124,71 @@ if (courseListEl) {
   });
 }
 
+function applyUniversityToGpaPage(uniId) {
+  const uni = UNIVERSITIES[uniId];
+  GRADE_POINTS = uni.grades;
+
+  const prevGpaInput = document.getElementById("prevGpa");
+  const prevGpaLabel = document.getElementById("prevGpaLabel");
+  if (prevGpaInput) {
+    prevGpaInput.max = uni.scaleMax;
+    prevGpaInput.placeholder = uni.scaleMax === 4.0 ? "مثال: 3.20" : "مثال: 4.20";
+    // لو القيمة الحالية تتجاوز سلّم الجامعة الجديدة، صححها فورًا
+    const currentVal = parseFloat(prevGpaInput.value);
+    if (!isNaN(currentVal) && currentVal > uni.scaleMax) {
+      prevGpaInput.value = uni.scaleMax;
+    }
+  }
+  if (prevGpaLabel) prevGpaLabel.textContent = `معدلك التراكمي السابق (من ${uni.scaleMax.toFixed(1)})`;
+
+  document.querySelectorAll(".course-row").forEach(row => {
+    const select = row.querySelector(".c-grade");
+    const current = select.value;
+    select.innerHTML = Object.keys(GRADE_POINTS).map(g => `<option value="${g}" ${g === current ? "selected" : ""}>${g}</option>`).join("");
+  });
+
+  document.getElementById("semGpa").textContent = "—";
+  document.getElementById("cumGpa").textContent = "—";
+  document.getElementById("totalHours").textContent = "—";
+}
+
+
 /* ============ حاسبة الغياب ============ */
+const ABSENCE_POLICY = {
+  ksu:   { ratio: 0.25, confirmed: true },
+  kau:   { ratio: 0.25, confirmed: true },
+  pnu:   { ratio: 0.25, confirmed: true },
+  kfupm: { ratio: 0.25, confirmed: false, link: "https://ses.kfupm.edu.sa" }
+};
+
 const calcAbsenceBtn = document.getElementById("calcAbsence");
 if (calcAbsenceBtn) {
   const WEEKS = 15;
-  const ALLOWED_RATIO = 0.25;
+  const absenceUniSelectEl = document.getElementById("absenceUniSelect");
+  const absenceNoticeEl = document.getElementById("absenceNotice");
+
+  function updateAbsenceNotice() {
+    const uniId = getSelectedUniversity();
+    const policy = ABSENCE_POLICY[uniId];
+    if (!policy.confirmed) {
+      absenceNoticeEl.style.display = "block";
+      absenceNoticeEl.innerHTML = `ما لقينا نسبة رسمية مؤكدة 100% لـ${UNIVERSITIES[uniId].name}. الحاسبة تستخدم 25% كتقدير مبدئي (السياسة الشائعة بالجامعات السعودية) — راجع <a href="${policy.link}" target="_blank" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;">لائحة الجامعة الرسمية</a> للتأكد قبل ما تعتمد عليها.`;
+    } else {
+      absenceNoticeEl.style.display = "none";
+    }
+  }
+
+  if (absenceUniSelectEl) {
+    absenceUniSelectEl.value = getSelectedUniversity();
+    updateAbsenceNotice();
+    absenceUniSelectEl.addEventListener("change", () => {
+      setSelectedUniversity(absenceUniSelectEl.value);
+      updateAbsenceNotice();
+    });
+  }
 
   calcAbsenceBtn.addEventListener("click", () => {
+    const ALLOWED_RATIO = ABSENCE_POLICY[getSelectedUniversity()].ratio;
     const weeklyHours = parseFloat(document.getElementById("weeklyHours").value) || 0;
     const absentHours = parseFloat(document.getElementById("absentHours").value) || 0;
 
@@ -102,32 +231,116 @@ if (calGrid) {
   const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
   const STORAGE_KEY = "masar_calendar_events";
 
-  /* التقويم الجامعي الرسمي — جامعة الملك سعود، العام الجامعي 2026-2027م
-     المصدر: dar.ksu.edu.sa/ar/current (آخر تحديث: أغسطس 2026) */
-  const KSU_EVENTS = {
-    "2026-08-23": [{ title: "بداية الدراسة — الفصل الأول" }],
-    "2026-09-23": [{ title: "بداية إجازة اليوم الوطني" }],
-    "2026-09-27": [{ title: "بداية الدراسة بعد إجازة اليوم الوطني" }],
-    "2026-11-22": [{ title: "بداية إجازة الخريف" }],
-    "2026-11-29": [{ title: "بداية الدراسة بعد إجازة الخريف" }],
-    "2026-12-06": [{ title: "أسبوع التعزيز الأكاديمي" }],
-    "2026-12-13": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
-    "2026-12-26": [{ title: "نهاية الاختبارات النهائية — الفصل الأول" }],
-    "2026-12-27": [{ title: "بداية إجازة منتصف العام" }],
-    "2027-01-10": [{ title: "بداية الدراسة — الفصل الثاني" }],
-    "2027-02-14": [{ title: "بداية إجازة عيد الفطر المبارك" }],
-    "2027-03-14": [{ title: "بداية الدراسة بعد إجازة عيد الفطر" }],
-    "2027-05-09": [{ title: "بداية إجازة عيد الأضحى المبارك" }],
-    "2027-05-23": [{ title: "بداية الدراسة بعد إجازة عيد الأضحى" }],
-    "2027-05-30": [{ title: "أسبوع التعزيز الأكاديمي" }],
-    "2027-06-06": [{ title: "بداية الاختبارات النهائية — الفصل الثاني" }],
-    "2027-06-19": [{ title: "نهاية الاختبارات النهائية — الفصل الثاني" }],
-    "2027-06-20": [{ title: "بداية إجازة نهاية العام الدراسي" }],
-    "2027-06-22": [{ title: "بداية الدراسة — الفصل الصيفي" }],
-    "2027-08-10": [{ title: "بداية الاختبارات النهائية — الفصل الصيفي" }],
-    "2027-08-12": [{ title: "نهاية الاختبارات النهائية — الفصل الصيفي" }],
-    "2027-08-29": [{ title: "بداية الدراسة للعام الجامعي 2027-2028" }]
+  /* التقويم الجامعي الرسمي لكل جامعة — العام الجامعي 2026-2027م
+     المصادر: dar.ksu.edu.sa (KSU) — ملف PDF رسمي من عمادة القبول والتسجيل (KAU)
+     ملف PDF رسمي من عمادة القبول والتسجيل (KFUPM) — pnu.edu.sa/ar/AcademicCalendar (PNU) */
+  const OFFICIAL_EVENTS = {
+    ksu: {
+      "2026-08-23": [{ title: "بداية الدراسة — الفصل الأول" }],
+      "2026-09-23": [{ title: "بداية إجازة اليوم الوطني" }],
+      "2026-09-27": [{ title: "بداية الدراسة بعد إجازة اليوم الوطني" }],
+      "2026-11-22": [{ title: "بداية إجازة الخريف" }],
+      "2026-11-29": [{ title: "بداية الدراسة بعد إجازة الخريف" }],
+      "2026-12-06": [{ title: "أسبوع التعزيز الأكاديمي" }],
+      "2026-12-13": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
+      "2026-12-26": [{ title: "نهاية الاختبارات النهائية — الفصل الأول" }],
+      "2026-12-27": [{ title: "بداية إجازة منتصف العام" }],
+      "2027-01-10": [{ title: "بداية الدراسة — الفصل الثاني" }],
+      "2027-02-14": [{ title: "بداية إجازة عيد الفطر المبارك" }],
+      "2027-03-14": [{ title: "بداية الدراسة بعد إجازة عيد الفطر" }],
+      "2027-05-09": [{ title: "بداية إجازة عيد الأضحى المبارك" }],
+      "2027-05-23": [{ title: "بداية الدراسة بعد إجازة عيد الأضحى" }],
+      "2027-05-30": [{ title: "أسبوع التعزيز الأكاديمي" }],
+      "2027-06-06": [{ title: "بداية الاختبارات النهائية — الفصل الثاني" }],
+      "2027-06-19": [{ title: "نهاية الاختبارات النهائية — الفصل الثاني" }],
+      "2027-06-20": [{ title: "بداية إجازة نهاية العام الدراسي" }],
+      "2027-06-22": [{ title: "بداية الدراسة — الفصل الصيفي" }],
+      "2027-08-10": [{ title: "بداية الاختبارات النهائية — الفصل الصيفي" }],
+      "2027-08-12": [{ title: "نهاية الاختبارات النهائية — الفصل الصيفي" }],
+      "2027-08-29": [{ title: "بداية الدراسة للعام الجامعي 2027-2028" }]
+    },
+    kau: {
+      "2026-08-30": [{ title: "بداية الدراسة — الفصل الأول" }],
+      "2026-09-23": [{ title: "إجازة اليوم الوطني" }],
+      "2026-10-12": [{ title: "بداية اختبارات الدوري الأول" }],
+      "2026-11-08": [{ title: "بداية اختبارات الدوري الثاني" }],
+      "2026-11-22": [{ title: "بداية إجازة الخريف" }],
+      "2026-11-29": [{ title: "بداية الدراسة بعد إجازة الخريف" }],
+      "2026-12-20": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
+      "2027-01-07": [{ title: "نهاية الفصل الدراسي الأول" }],
+      "2027-01-17": [{ title: "بداية الدراسة — الفصل الثاني" }]
+    },
+    kfupm: {
+      "2026-08-19": [{ title: "بداية الدراسة — الفصل الأول" }],
+      "2026-09-23": [{ title: "بداية إجازة اليوم الوطني" }],
+      "2026-10-20": [{ title: "بداية إجازة منتصف الفصل" }],
+      "2026-10-25": [{ title: "استئناف الدراسة بعد إجازة منتصف الفصل" }],
+      "2026-11-22": [{ title: "بداية إجازة الخريف" }],
+      "2026-12-10": [{ title: "آخر يوم دراسي بالفصل الأول" }],
+      "2026-12-13": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
+      "2026-12-24": [{ title: "نهاية الاختبارات النهائية — الفصل الأول" }],
+      "2026-12-26": [{ title: "حفل التخرج الرسمي" }],
+      "2027-01-10": [{ title: "بداية التسجيل للفصل الثاني" }]
+    },
+    pnu: {
+      "2026-08-23": [{ title: "بداية الدراسة — الفصل الأول" }],
+      "2026-09-23": [{ title: "إجازة اليوم الوطني" }],
+      "2026-11-19": [{ title: "بداية إجازة الخريف" }],
+      "2026-11-29": [{ title: "بداية الدراسة بعد إجازة الخريف" }],
+      "2026-12-13": [{ title: "بداية الاختبارات النهائية — الفصل الأول" }],
+      "2027-01-07": [{ title: "بداية إجازة منتصف العام الدراسي" }],
+      "2027-01-17": [{ title: "بداية الدراسة — الفصل الثاني" }],
+      "2027-02-21": [{ title: "إجازة يوم التأسيس" }],
+      "2027-02-25": [{ title: "بداية إجازة عيد الفطر المبارك" }],
+      "2027-03-14": [{ title: "بداية الدراسة بعد إجازة عيد الفطر" }],
+      "2027-05-06": [{ title: "بداية إجازة عيد الأضحى المبارك" }],
+      "2027-05-23": [{ title: "بداية الدراسة بعد إجازة عيد الأضحى" }],
+      "2027-05-30": [{ title: "بداية الاختبارات النهائية — الفصل الثاني" }],
+      "2027-06-17": [{ title: "بداية إجازة نهاية العام الدراسي" }],
+      "2027-06-27": [{ title: "بداية الدراسة — الفصل الصيفي" }],
+      "2027-08-16": [{ title: "بداية الاختبارات النهائية — الفصل الصيفي" }],
+      "2027-08-22": [{ title: "بداية العام الدراسي 1449هـ" }]
+    }
   };
+
+  const OFFICIAL_LINKS = {
+    ksu: "https://dar.ksu.edu.sa/ar/current",
+    kau: "https://kau.edu.sa/ar/page/detailed-calendar",
+    kfupm: "https://registrar.kfupm.edu.sa",
+    pnu: "https://pnu.edu.sa/ar/AcademicCalendar/Pages/default.aspx"
+  };
+
+  const calUniSelectEl = document.getElementById("calUniSelect");
+  const calNoticeEl = document.getElementById("calNotice");
+
+  function getUniEvents() {
+    return OFFICIAL_EVENTS[getSelectedUniversity()] || {};
+  }
+
+  function updateCalNotice() {
+    const uniId = getSelectedUniversity();
+    const uniEvents = OFFICIAL_EVENTS[uniId] || {};
+    if (Object.keys(uniEvents).length === 0) {
+      calNoticeEl.style.display = "block";
+      calNoticeEl.innerHTML = `التقويم التفصيلي لـ${UNIVERSITIES[uniId].name} قيد الإضافة حاليًا. بإمكانك إضافة مواعيدك بنفسك أدناه، أو مراجعة <a href="${OFFICIAL_LINKS[uniId]}" target="_blank" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;">التقويم الرسمي</a> مباشرة.`;
+    } else {
+      calNoticeEl.style.display = "none";
+    }
+  }
+
+  if (calUniSelectEl) {
+    calUniSelectEl.value = getSelectedUniversity();
+    updateCalNotice();
+    calUniSelectEl.addEventListener("change", () => {
+      setSelectedUniversity(calUniSelectEl.value);
+      updateCalNotice();
+      renderCalendar();
+      selectedDate = null;
+      document.getElementById("selectedDateLabel").textContent = "اختر يومًا من التقويم";
+      document.getElementById("eventForm").style.display = "none";
+      document.getElementById("eventList").innerHTML = "";
+    });
+  }
 
   let today = new Date();
   let viewYear = today.getFullYear();
@@ -145,7 +358,7 @@ if (calGrid) {
     return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
   }
   function getDayEvents(key) {
-    const official = (KSU_EVENTS[key] || []).map(e => ({ ...e, official: true }));
+    const official = (getUniEvents()[key] || []).map(e => ({ ...e, official: true }));
     const personal = (loadEvents()[key] || []).map(e => ({ ...e, official: false }));
     return official.concat(personal);
   }
@@ -179,7 +392,7 @@ if (calGrid) {
       if (isToday) cell.classList.add("today");
 
       const dayEvents = getDayEvents(key);
-      const hasOfficial = !!KSU_EVENTS[key];
+      const hasOfficial = !!getUniEvents()[key];
       const hasPersonal = dayEvents.some(e => !e.official);
       if (hasOfficial) cell.classList.add("official");
 
@@ -230,7 +443,7 @@ if (calGrid) {
       if (!ev.official) {
         item.querySelector(".remove-btn").addEventListener("click", () => {
           const events = loadEvents();
-          const personalIdx = idx - (KSU_EVENTS[selectedDate] || []).length;
+          const personalIdx = idx - (getUniEvents()[selectedDate] || []).length;
           events[selectedDate].splice(personalIdx, 1);
           if (events[selectedDate].length === 0) delete events[selectedDate];
           saveEvents(events);

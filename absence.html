@@ -21,6 +21,7 @@
       <span class="name">مبادرة مسار</span>
     </a>
     <nav class="site-nav">
+      <a href="index.html">الرئيسية</a>
       <a href="gpa.html">حاسبة المعدل</a>
       <a href="absence.html" class="active">حاسبة الغياب</a>
       <a href="calendar.html">التقويم</a>
@@ -38,9 +39,23 @@
 
 <main>
   <div class="wrap">
-    <p class="eyebrow">على أساس 15 أسبوعًا دراسيًا</p>
+    <p class="eyebrow">تختلف النسبة حسب جامعتك</p>
     <h1 class="page-title">حاسبة الغياب</h1>
-    <p class="page-sub">النسبة المسموحة للغياب قبل الحرمان هي 25% من ساعات المادة على مدار الفصل. أدخل بيانات مادتك وبنوضح لك كم تبقى لك.</p>
+    <p class="page-sub">اختر جامعتك أدناه وتتحدد النسبة المسموحة تلقائيًا. أدخل بيانات مادتك وبنوضح لك كم تبقى لك.</p>
+
+    <div class="panel">
+      <div class="field">
+        <label>الجامعة</label>
+        <select id="absenceUniSelect">
+          <option value="ksu">جامعة الملك سعود (KSU) — 25%</option>
+          <option value="kau">جامعة الملك عبدالعزيز (KAU) — 25%</option>
+          <option value="kfupm">جامعة الملك فهد للبترول والمعادن (KFUPM)</option>
+          <option value="pnu">جامعة الأميرة نورة (PNU) — 25%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel" id="absenceNotice" style="display:none;"></div>
 
     <div class="panel">
       <div class="field-row">
@@ -77,13 +92,13 @@
     <div class="panel" style="margin-top: 36px;">
       <h2>كيف تُحسب نسبة الغياب المسموحة؟</h2>
       <p style="color: var(--muted); font-size: 15px;">
-        بأغلب الجامعات السعودية، يُحرم الطالب من دخول الاختبار النهائي في المادة إذا تجاوزت نسبة غيابه 25% من إجمالي ساعات المادة على مدار الفصل الدراسي (15 أسبوعًا). يعني لو مادتك 3 ساعات أسبوعيًا، إجمالي ساعاتها بالفصل 45 ساعة، والمسموح لك تغيب منها 25% فقط (حوالي 11 ساعة ونص). هذي الحاسبة تحسب لك الرقم بالضبط بناءً على بيانات مادتك، عشان تعرف كم تبقى لك قبل ما توصل لحد الحرمان.
+        بأغلب الجامعات السعودية الحكومية، يُحرم الطالب من دخول الاختبار النهائي في المادة إذا تجاوزت نسبة غيابه 25% من إجمالي ساعات المادة على مدار الفصل الدراسي (15 أسبوعًا) — وهذا مؤكد لجامعات الملك سعود، الملك عبدالعزيز، والأميرة نورة. مثال: لو مادتك 3 ساعات أسبوعيًا، إجمالي ساعاتها بالفصل 45 ساعة، والمسموح لك تغيب منها 25% فقط (حوالي 11 ساعة ونص).
       </p>
     </div>
   </div>
 </main>
 
-<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+<footer class="site"><div class="wrap footer-inner"><span>مسار — أداة مستقلة لتسهيل الحياة الدراسية</span><span>صُممت للطالب، ببساطة.</span></div></footer>
 
 <script src="script.js"></script>
 </body>

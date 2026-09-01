@@ -21,6 +21,7 @@
       <span class="name">مبادرة مسار</span>
     </a>
     <nav class="site-nav">
+      <a href="index.html">الرئيسية</a>
       <a href="gpa.html">حاسبة المعدل</a>
       <a href="absence.html">حاسبة الغياب</a>
       <a href="calendar.html" class="active">التقويم</a>
@@ -40,7 +41,21 @@
   <div class="wrap">
     <p class="eyebrow">فعاليات ومواعيد الفصل</p>
     <h1 class="page-title">التقويم الدراسي</h1>
-    <p class="page-sub">مواعيد التقويم الجامعي الرسمي (جامعة الملك سعود) مضافة تلقائيًا. اضغط على أي يوم لعرض تفاصيله أو لإضافة موعدك الخاص — تُحفظ مواعيدك في متصفحك تلقائيًا.</p>
+    <p class="page-sub">اختر جامعتك وتُضاف مواعيد تقويمها الرسمي تلقائيًا (مواعيد مؤكدة من المصادر الرسمية لكل جامعة). اضغط على أي يوم لعرض تفاصيله أو لإضافة موعدك الخاص — تُحفظ مواعيدك في متصفحك تلقائيًا.</p>
+
+    <div class="panel">
+      <div class="field">
+        <label>الجامعة</label>
+        <select id="calUniSelect">
+          <option value="ksu">جامعة الملك سعود (KSU)</option>
+          <option value="kau">جامعة الملك عبدالعزيز (KAU)</option>
+          <option value="kfupm">جامعة الملك فهد للبترول والمعادن (KFUPM)</option>
+          <option value="pnu">جامعة الأميرة نورة (PNU)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel" id="calNotice" style="display:none;"></div>
 
     <div class="panel">
       <div class="cal-head">
@@ -65,7 +80,7 @@
   </div>
 </main>
 
-<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+<footer class="site"><div class="wrap footer-inner"><span>مسار — أداة مستقلة لتسهيل الحياة الدراسية</span><span>صُممت للطالب، ببساطة.</span></div></footer>
 
 <script src="script.js"></script>
 </body>

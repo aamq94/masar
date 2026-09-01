@@ -3,68 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مبادرة مسار — حاسبة المعدل، حاسبة الغياب، والتقويم الجامعي</title>
-<meta name="description" content="مبادرة مسار: أدوات دراسية مجانية للطالب الجامعي — حاسبة معدل فصلي وتراكمي، حاسبة غياب، وتقويم جامعي رسمي. بدون تسجيل دخول.">
-<link rel="canonical" href="https://mssar.site/index.html">
+<title>مبادرة مسار — أدوات دراسية للطالب الجامعي</title>
+<meta name="description" content="مسار مبادرة تجمع أدوات دراسية مجانية للطالب الجامعي: حاسبة المعدل، حاسبة الغياب، والتقويم الجامعي. بدون تسجيل دخول.">
+<meta name="theme-color" content="#1E2A22">
 <meta property="og:title" content="مبادرة مسار — أدوات دراسية للطالب الجامعي">
-<meta property="og:description" content="حاسبة المعدل، حاسبة الغياب، والتقويم الجامعي في مكان واحد، مجانًا بدون تسجيل.">
+<meta property="og:description" content="حاسبة المعدل، حاسبة الغياب، والتقويم الجامعي في مكان واحد، مجانًا وبدون تسجيل.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://mssar.site/index.html">
+<meta property="og:url" content="https://mssar.site/">
+<link rel="canonical" href="https://mssar.site/">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site">
-  <div class="wrap">
-    <a class="brand" href="index.html">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="مسار - الصفحة الرئيسية">
       <span class="mark">م</span>
       <span class="name">مبادرة مسار</span>
     </a>
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="التنقل الرئيسي">
+      <a href="index.html" class="active">الرئيسية</a>
       <a href="gpa.html">حاسبة المعدل</a>
       <a href="absence.html">حاسبة الغياب</a>
       <a href="calendar.html">التقويم</a>
       <span class="social-group">
-        <a class="social-link" href="https://t.me/mssarr" target="_blank" rel="noopener" title="قناة مسار على تيليجرام">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.8 4.4 18.6 20c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6 12.3l-4.8-1.5c-1-.3-1-1 .2-1.5L20.4 3c.9-.3 1.6.2 1.4 1.4Z"/></svg><span>تابعونا في تيليجرام</span>
+        <a class="social-link" href="https://t.me/mssarr" target="_blank" rel="noopener" title="قناة مسار على تيليجرام" aria-label="تيليجرام">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.8 4.4 18.6 20c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6 12.3l-4.8-1.5c-1-.3-1-1 .2-1.5L20.4 3c.9-.3 1.6.2 1.4 1.4Z"/></svg><span>تيليجرام</span>
         </a>
-        <a class="social-link" href="https://x.com/mssar_k" target="_blank" rel="noopener" title="حساب مسار على X">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2Zm-1.2 18h1.7L7.4 4H5.6l12.1 16Z"/></svg><span>تابعونا في X</span>
+        <a class="social-link" href="https://x.com/mssar_k" target="_blank" rel="noopener" title="حساب مسار على X" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2Zm-1.2 18h1.7L7.4 4H5.6l12.1 16Z"/></svg><span>X</span>
         </a>
       </span>
     </nav>
   </div>
 </header>
 
-<main>
+<main class="home-main">
   <div class="wrap">
-    <p class="eyebrow">أدوات مساعدة للطالب</p>
-    <h1 class="page-title">كل اللي يلزمك بين المحاضرات، بمكان وحد</h1>
-    <p class="page-sub">مسار مبادرة بسيطة تجمع الأدوات اللي يحتاجها الطالب يوميًا: يحسب معدله، يتابع غيابه، ويعرف مواعيد فصله — بدون تسجيل دخول، وبدون تعقيد.</p>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="hero-badge"><span class="pulse"></span> أدوات جامعية، بدون تعقيد</span>
+        <p class="eyebrow">مبادرة مسار</p>
+        <h1 class="hero-title">كل اللي يلزمك بين المحاضرات، <span>بمكان واحد.</span></h1>
+        <p class="hero-sub">مسار تجمع لك الأدوات الدراسية التي تحتاجها يوميًا: احسب معدلك، تابع غيابك، واعرف مواعيد فصلك. بدون تسجيل دخول، وبدون خطوات زائدة.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary hero-btn" href="#tools">استكشف الأدوات <span aria-hidden="true">←</span></a>
+          <a class="text-link" href="#about">وش هي مسار؟</a>
+        </div>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="hero-symbol">م</div>
+      </div>
+    </section>
 
-    <div class="tools-grid">
-      <a class="tool-card" href="gpa.html">
-        <span class="num">١</span>
-        <h3>حاسبة المعدل</h3>
-        <p>احسب معدلك الفصلي والتراكمي حسب سلم الدرجات من 5.0</p>
-      </a>
-      <a class="tool-card" href="absence.html">
-        <span class="num">٢</span>
-        <h3>حاسبة الغياب</h3>
-        <p>اعرف نسبة غيابك من كل مادة وكم ساعة متبقية لك قبل الحرمان</p>
-      </a>
-      <a class="tool-card" href="calendar.html">
-        <span class="num">٣</span>
-        <h3>التقويم الدراسي</h3>
-        <p>تابع فعاليات ومواعيد الفصل الدراسي يوم بيوم</p>
-      </a>
-    </div>
+    <section class="uni-panel panel" aria-labelledby="uni-heading">
+      <div class="uni-copy">
+        <span class="mini-label">خطوة واحدة قبل البداية</span>
+        <h2 id="uni-heading">اختر جامعتك</h2>
+        <p>نستخدم اختيارك لتحديد سلّم المعدل ونسبة الغياب والتقويم المناسب داخل الأدوات.</p>
+      </div>
+      <div class="field">
+        <label for="homeUniSelect">الجامعة</label>
+        <select id="homeUniSelect">
+          <option value="ksu">جامعة الملك سعود (KSU)</option>
+          <option value="kau">جامعة الملك عبدالعزيز (KAU)</option>
+          <option value="kfupm">جامعة الملك فهد للبترول والمعادن (KFUPM)</option>
+          <option value="pnu">جامعة الأميرة نورة (PNU)</option>
+        </select>
+      </div>
+    </section>
 
-    <p class="hero-note">تُجرى كل الحسابات داخل متصفحك — بياناتك ما ترسل لأي سيرفر.</p>
+    <section id="tools" class="tools-section" aria-labelledby="tools-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">أدواتك اليومية</span>
+          <h2 id="tools-heading">اختر الأداة اللي تحتاجها</h2>
+        </div>
+        <span class="section-count">03 أدوات</span>
+      </div>
+
+      <div class="tools-grid">
+        <a class="tool-card tool-card-main" href="gpa.html">
+          <div class="tool-top"><span class="tool-icon">٪</span><span class="tool-arrow">↗</span></div>
+          <span class="num">١</span>
+          <h3>حاسبة المعدل</h3>
+          <p>احسب معدلك الفصلي والتراكمي حسب سلّم جامعتك، مع حساب الساعات والدرجات.</p>
+          <span class="tool-link">ابدأ الحساب <span>←</span></span>
+        </a>
+        <a class="tool-card" href="absence.html">
+          <div class="tool-top"><span class="tool-icon">✓</span><span class="tool-arrow">↗</span></div>
+          <span class="num">٢</span>
+          <h3>حاسبة الغياب</h3>
+          <p>اعرف نسبة غيابك وكم ساعة متبقية لك قبل الوصول للحد المسموح.</p>
+          <span class="tool-link">احسب غيابك <span>←</span></span>
+        </a>
+        <a class="tool-card" href="calendar.html">
+          <div class="tool-top"><span class="tool-icon">□</span><span class="tool-arrow">↗</span></div>
+          <span class="num">٣</span>
+          <h3>التقويم الدراسي</h3>
+          <p>تابع مواعيد الفصل وأضف مواعيدك الخاصة، وتبقى محفوظة في متصفحك.</p>
+          <span class="tool-link">افتح التقويم <span>←</span></span>
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="about-grid">
+      <div class="about-card">
+        <span class="mini-label">فكرة مسار</span>
+        <h2>أدوات بسيطة لمشوار جامعي أخف.</h2>
+        <p>مسار مبادرة مستقلة هدفها تختصر عليك البحث والحسابات المتكررة، وتجمع أهم الأدوات الدراسية في واجهة واحدة.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-item"><span class="trust-icon">↯</span><div><strong>بدون تسجيل</strong><small>ابدأ مباشرة من المتصفح</small></div></div>
+        <div class="trust-item"><span class="trust-icon">⌁</span><div><strong>خصوصيتك أولًا</strong><small>الحسابات تتم داخل متصفحك</small></div></div>
+        <div class="trust-item"><span class="trust-icon">◌</span><div><strong>مصادر واضحة</strong><small>نربط المعلومات بالمصادر الرسمية عند توفرها</small></div></div>
+      </div>
+    </section>
+
+    <div class="hero-note privacy-note"><span aria-hidden="true">🔒</span> لا تحتاج أدوات مسار إلى إنشاء حساب. بيانات الحاسبات التي تدخلها تبقى داخل متصفحك ولا تُرسل إلى خادم مسار.</div>
   </div>
 </main>
 
-<footer class="site">مسار — أداة مستقلة لتسهيل الحياة الدراسية</footer>
+<footer class="site">
+  <div class="wrap footer-inner">
+    <span>مسار — أداة مستقلة لتسهيل الحياة الدراسية</span>
+    <span>صُممت للطالب، ببساطة.</span>
+  </div>
+</footer>
 
+<script src="script.js"></script>
 </body>
 </html>
